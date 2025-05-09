@@ -1,0 +1,3046 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns=http://www.w3.org/1999/xhtml id=sixapart-standard lang=zh-CN style><!--
+ Page saved with SingleFile 
+ url: https://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html 
+ saved date: Fri May 09 2025 10:45:10 GMT+0800 (China Standard Time)
+--><meta charset=utf-8>
+<meta name=generator content="Movable Type  5.2.2">
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel=start href=https://www.ruanyifeng.com/blog/ title=Home>
+<link rel=alternate type=application/atom+xml title="Recent Entries" href=https://feeds.feedburner.com/ruanyifeng>
+<style>#container::before{display:block;width:100%;padding:10px;background:rgba(0,0,0,0.1);text-align:center;content:"本站显示不正常，可能因为您使用了广告拦截器。"}</style>
+<style>html,body,div,span,iframe,h1,h2,h3,p,blockquote,pre,a,abbr,img,ul,li,form,label{margin:0;padding:0;list-style-type:none;text-align:left;text-decoration:none;border-bottom:none;font-weight:normal;font-style:normal;border:none;color:#111}body{margin:0;padding:0;background-color:#f5f5d5;font-family:Georgia,serif;letter-spacing:-0.01em;word-spacing:.2em;line-height:1.8em;font-size:62.5%;color:#111;width:98%}#container::before{display:none}@media (max-width:30rem){body{font-size:60%}}h1{font-size:2.88em}h2{font-size:2.88em;line-height:1.35em}@media (max-width:30rem){h2{font-size:2em}}ul li{list-style-type:square}strong{font-weight:800}p,li{font-size:1.6em;line-height:220%}input,textarea{font-size:1.13em}#container{margin:0 auto;background-color:#f5f5d5;padding:1em}body.one-column #container{width:65%;min-width:640px;max-width:960px}@media (max-width:48rem){#container{padding:.5em}body.one-column #container{width:98%;min-width:0px;overflow:hidden}}#header{width:100%}#header{border-bottom:1px solid #d3d3d3;margin:1em;float:left;height:5em}#header div#header-name{margin-top:.9em;font-size:1.8em;color:#567}#header div#header-name{float:left}#header #feed_icon,#header #google_search{float:right;margin-left:1%;margin-right:1%}#header #feed_icon{margin-top:.9em;-webkit-transform:rotate(5deg);-moz-transform:rotate(5deg);-o-transform:rotate(5deg);transform:rotate(5deg);-webkit-transition:-webkit-transform .4s ease-in;-moz-transition:-moz-transform .4s ease-in;-o-transition:-o-transform .4s ease-in;transition:transform .4s ease-in}#header #feed_icon:hover{-webkit-transform:rotate(275deg);-moz-transform:rotate(275deg);-o-transform:rotate(275deg);transform:rotate(275deg)}#header #google_search{width:201px;height:2.4em;background-image:url(data:image/gif;base64,R0lGODlhyQAYANUAAISEhNjY2Nzc3NnZ2dra2tfX193d3YWFhZiYmPv7++Xl5dvb26KiooeHh/Ly8oiIiLW1tY6Ojvz8/KioqI2NjYuLi7+/v9/f35CQkJSUlKGhoaWlpaurq+rq6unp6eTk5PX19ezs7Lu7u5KSksjIyLi4uPn5+Z2dne7u7tXV1ejo6Pj4+Ovr67y8vObm5peXl5GRkbGxsfHx8e/v75ubm97e3tbW1v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAADJABgAAAb/wE5tSCwaj8ikcslsOp/QqHRKVQpv2Kx2y+16v+CweEwum8/o9LdmULvf8Lh8Tg8b2vW8fs/vl+9+gYKDgiAtCAAIEDNkBgKEkJGSaQoRABQMiA02YwKPk6ChojcOERUBWRcRDS5inqOwsYElAKhaCgcTrguyvb5zGRldEwcSYQu8v8rLZrldIgAOxwTM1dZeGAhdHAcJYQTU1+LXMQAXWzIPDGLg4+7MLA0YClkeIwAADxbGXgQD7wB/pWgAYAMEDfgQ4qMRwsuAfwEjxlLBAV/BAStOWHxAostDiSBjofCGRYKFAxYZSNMywFbIl7IUvLBY4ROWAC5h6hSVAIJFQgpacO4cOkoADADrsgQoQLQpqAQfTGgpwNSpVVFUr2qdVIDT1q+DbASwQbas2bNo06pdy7at27dw48qdS7fu2gBBAAA7);background-repeat:no-repeat;padding:0px;margin:1.3em 1em;position:relative}#header #google_search form{display:inline}#header #google_search .searchbox{border:0px;background-color:transparent;position:absolute;top:0px;left:1px;width:180px;height:24px;outline:none}#header #google_search .searchbox_submit{border:0px;background-color:transparent;position:absolute;top:0px;left:176px;width:29px;height:25px}#header a{color:orange}#footer img{border:none}@media (max-width:30rem){#header #feed_icon{display:none}#header #google_search{display:none}}@media (max-width:48rem){#header{margin:0 2em;height:3em;margin-bottom:1em;max-width:95%}#header div#header-name{margin-top:.5em}}#content{clear:both;margin:1.5em 1em 1em 1em}@media (max-width:30rem){#content{margin:0em}}#content h1,h2,h3{margin:.4em 0 .2em 0;padding:0 0 .2em 0;color:#000;font-weight:500;letter-spacing:-0.03em;border-bottom:1px solid #d3d3d3}#content a:link{color:#567}#content a:visited{color:#567}#content a:hover{color:#654}.one-column #alpha{width:100%}.one-column #alpha h1{line-height:250%;font-family:"Trebuchet MS",Arial,"Lucida Grande",Verdana,Lucida,Helvetica,sans-serif}body.one-column #content #alpha{padding-top:.5em}body.one-column #content #alpha p{margin-top:1em;line-height:180%;margin-left:.8em}body.one-column #content #alpha .asset-content a:link{color:#223472}body.one-column #content #alpha .asset-content a:visited{color:#406}body.one-column #content #alpha .asset-content a:hover{color:#d03500}body.one-column #content #alpha .asset-content a:active{color:#9a2c06}body.one-column #content #alpha .asset-content img{border:.3em solid #e0dfcc;-moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em}@media (max-width:48rem){body.one-column #content #alpha .asset-content img{max-width:95%;overflow:auto;border:.15em solid #e0dfcc}}@media (max-width:48rem){}@media (max-width:48rem){}.asset-footer abbr{color:#3d3d3d}@media (max-width:48rem){}@media (max-width:30rem){}@media (max-width:48rem){}body.one-column #content #alpha div.entry-asset{border-bottom:1px solid #d3d3d3;padding-bottom:1em}body.one-column #content #alpha div.asset-nav,body.one-column #content #alpha div.asset-footer{font-weight:bold;color:#fcb297;padding:.3em .5em;margin:0 0 1em 0;border-bottom:none;-moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;-moz-box-shadow:inset 0px 1px 0px 0px #eee;-webkit-box-shadow:inset 0px 1px 0px 0px #eee;box-shadow:inset 0px 1px 0px 0px #eee;background:-webkit-gradient(linear,left top,left bottom,color-stop(0.05,#aad2f0),color-stop(1,#8bc1ed));background:-moz-linear-gradient(center top,#aad2f0 5%,#8bc1ed 100%);background-color:#aad2f0;border:1px solid #dcdcdc;text-shadow:1px 1px 0px #eee}body.one-column #content #alpha div.asset-nav:after{content:" ";display:block;height:0;clear:both}body.one-column #content #alpha div.asset-nav{zoom:1}body.one-column #content #alpha div.asset-footer{margin-top:2em;padding:1.5em;border:1px solid #d3d3d3;background-color:#deebf7}body.one-column #content #alpha div.asset-footer h3{border-bottom:1px solid gray;font-size:1.92em;font-weight:bold;color:#567}body.one-column #content #alpha div.asset-footer ul{padding-left:2em;padding-right:2em}body.one-column #content #alpha div.asset-footer li{color:#567}body.one-column #content #alpha div.asset-nav *{display:inline}body.one-column #content #alpha div.asset-nav a{color:green}@media (max-width:30rem){body.one-column #content #alpha div.asset-nav div.entry-categories{float:left;width:70%;display:inline-block}}body.one-column #content #alpha div.asset-nav div.entry-location{width:20em;float:right;overflow:hidden;white-space:nowrap}body.one-column #content #alpha div.asset-nav div.entry-location li{display:block;list-style-type:none}body.one-column #content #alpha div.asset-nav div.entry-location a{color:#567;text-decoration:underline;font-size:95%}@media (max-width:30rem){body.one-column #content #alpha div.asset-nav div.entry-location{display:none}}@media (max-width:30rem){}body.one-column #content #alpha div.asset-meta{margin:1.5em auto 2em;line-height:.8}body.one-column #content #alpha div.asset-meta *{color:#567}@media (max-width:30rem){}body.one-column #content #alpha div.asset-content a{text-decoration:underline;color:#123}body.one-column #content #alpha div.asset-content a:visited{color:#123}body.one-column #content #alpha div.asset-content blockquote{background-color:#f5f2f0;padding:1em;margin:2em 2em;-moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;font-family:Consolas,Monaco,"Andale Mono",monospace;border-width:.3em;border-color:#e0dfcc;border-style:solid;text-shadow:0 1px white;overflow:auto}@media (max-width:48rem){body.one-column #content #alpha div.asset-content blockquote{padding:.5em 1em;margin:1em 1em;-moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;border-width:.15em}}#related_entries,#cre{margin-top:4em}#related_entries ul{margin-left:2em}#related_entries ul a{text-decoration:underline}#related_entries li div.entry-body{margin-left:1em;padding-left:.4em;border-left:.4em solid gray}#cre-inner{width:100%;max-width:100%}div#cre-left,div#cre-right{width:49%;display:inline-block}div#cre-right{float:right}#cre-inner img{width:100%;max-width:100%}@media (max-width:48rem){#cre div#cre-inner{width:98%;max-width:98%}div#cre-left,div#cre-right{float:none;margin:.5em auto;width:98%;display:block}div#cre-left a{text-align:center;display:block}div#cre-left img{max-width:100%;overflow:auto}}body.one-column #content #alpha #comments{clear:both;margin-top:2em}body.one-column #content #alpha #comments h2{padding-top:2em}body.one-column #content #alpha #comments a{text-decoration:underline}body.one-column #content #alpha #comments .comment{border-bottom:1px dashed #d3d3d3}body.one-column #content #alpha #comments .comment-header{margin-top:1.6em}body.one-column #content #alpha #comments .comment-header *{color:#2b2b2b;font-weight:700}body.one-column #content #alpha #comments .asset-meta{margin:.6em 0}body.one-column #content #alpha #comments .comment-content{margin-left:1em;font-size:.9em}body.one-column #content #alpha #comments .comment-content blockquote{background-color:#e0dfcc;padding:2em;margin:2em 2em 2em 2em;-moz-border-radius:1em;-webkit-border-radius:1em;border-radius:1em;font-size:.9em}body.one-column #content #alpha #comments .comment-content blockquote pre{font-weight:700;margin-bottom:1.5em;font-size:1.6em}body.one-column #content #alpha #comments .comment-footer{width:40%;margin-left:55%}body.one-column #content #alpha #comments .comment-footer p{font-size:1.2em}body.one-column #content #alpha #comments .comment-footer *{color:black}body.one-column #content #alpha #comments #comments-open input{border:1px solid #d3d3d3;margin-top:0;line-height:1.2;padding:.4em .3em;background-color:#f5f4df}body.one-column #content #alpha #comments #comments-open p{margin:.4em}body.one-column #content #alpha #comments #comments-open textarea{border:1px solid #d3d3d3;background-color:#f5f4df;padding:.5em;width:90%}body.one-column #content #alpha #comments #comments-open input#comment-submit{width:10em;padding:.2em 3em;text-align:center}span.hint{color:gray}body.one-column #content #alpha #comments #comment-last:target{animation:target-fade 4s 1;-webkit-animation:target-fade 4s 1;-moz-animation:target-fade 4s 1}@keyframes move{0%{background-color:rgba(0,0,0,0.1)}100%{background-color:rgba(0,0,0,0)}}@-webkit-keyframes target-fade{0%{background-color:rgba(0,0,0,0.1)}100%{background-color:rgba(0,0,0,0)}}@-moz-keyframes target-fade{0%{background-color:rgba(0,0,0,0.1)}100%{background-color:rgba(0,0,0,0)}}@media (max-width:48rem){body.one-column #content #alpha #comments .comment-footer{display:none}}#comments-open{background:#f0f0c0;padding:0em 1em 2em 2em;border-radius:2em}#footer{margin:0 1em;border-top:1px solid #d3d3d3;color:#d3d3d3;padding-top:0;clear:both;line-height:1.2}#footer a{color:gray}#footer-content{display:flex;justify-content:flex-end;flex-wrap:wrap}#footer-content section{width:300px;margin:1em 2em 2em 0}#footer-content section p{color:gray;font-size:1.4em}@media (max-width:30rem){#footer-content section{margin:1em 1em 0 0}#footer-content section p{text-align:right}}</style>
+<link rel=prev href=https://www.ruanyifeng.com/blog/2011/12/zen_and_the_art_of_motorcycle_maintenance.html title=《禅与摩托车维修艺术》读后感>
+<link rel=next href=https://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html title=SSH原理与运用（二）：远程操作与端口转发>
+<title>SSH原理与运用（一）：远程登录 - 阮一峰的网络日志</title>
+<meta name=referrer content=no-referrer><link type=image/x-icon rel="shortcut icon" href="data:image/vnd.microsoft.icon;base64,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"><style>.sf-hidden{display:none!important}</style><link rel=canonical href=https://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html><meta http-equiv=content-security-policy content="default-src 'none'; font-src 'self' data:; img-src 'self' data:; style-src 'unsafe-inline'; media-src 'self' data:; script-src 'unsafe-inline' data:; object-src 'self' data:; frame-src 'self' data:;"></head>
+<body id=scrapbook class="mt-entry-archive one-column">
+ <div id=container>
+ <div id=container-inner>
+ <div id=header>
+ <div id=header-inner>
+ <div id=header-content>
+ <div id=header-name>阮一峰的网络日志 <span id=site_location> » <a href=https://www.ruanyifeng.com/blog/ accesskey=1>首页</a></span><span id=site_archive> » <a href=https://www.ruanyifeng.com/blog/archives.html>档案</a></span>
+</div>
+<div id=google_search>
+<form action=https://www.baidu.com/s target=_blank id=cse-search-box>
+ <div>
+ <input type=text size=20 name=origin class=searchbox id=sbi value>
+ 
+ 
+ <input type=image src="data:image/gif;base64,R0lGODlhHQAYAIAAADg4OAAAACH5BAEAAAAALAAAAAAdABgAAAIYhI+py+0Po5y02ouz3rz7D4biSJbmiYoFADs=" class=searchbox_submit value alt=搜索 name=sa>
+</div>
+</form>
+</div>
+<div id=feed_icon>
+<a href="https://www.ruanyifeng.com/feed.html?utm_source=" title=订阅Feed>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAUzSURBVHjavFdbbFRVFF3nPjoz7dTWTittaW0jUDRAUqaNojyqREnEQKgfUj9MqqAmhqRt/OCD4CuY+Kckoh+aiGKC+gMJbdHoRysJ8dkhhmJLNdDKtJU+6GMK87j3Hs85d2Z6HzNtMYWb3Dn3NWftvfba+5xNYDl+e6Fkj6yqb/oDRbWq14vlPBLRKCITkxf0ROLt+hNjp1PPSRK4kA3vF1dXNRcWlyA2OQU9eos9opAkAiKxD+XkKO6t15aRWO7J/MgmAZU8MEgexgZHMX518Dh72sYMmVKShnxWuWHdHtxKIDIYTgMuDzgfmSOIQkYMpdUF8OY92Hytt4/jvkg47czzU16iQovM3QFwmNck+Yyduu7D6NA0Z6JR4THntFs9V4tWQg6Ui3s6MwKDncsFTnXKLJhDSeUK3AgPtyhccDzmVs999buRt/1Vm4i0od+hX7+MRG87jPGB/w1u8FPj9xEw7McVrnYuOCvtpjTth3J/nTg99c8LRhKhr6D3dTB5R24bXFwbMXBsyZzeoXaycEpJ95TB09AGX/NpqLVNtw8urnVzLvHjFNxiFqRy2OOHuqUVnue+ACkoWzo4O6lGzTmuHq6nPvY2m9rVqjrIK2rMEKxqyG5NPAKt+wjo0LklgfNxJkZMA3KJvqRUk3z5UFY3QH14P0h+WUY79HPvgv7VuSg4ZRGY1YgZgqXmORccF17sy2ehnf9AeO085K2HQFbtXBScj0LcpgF2cN+WV+DZ/LJQu6gD4R7oV7pBJwbSgtMvfiPoVp56DySwxm7EtkMs1WdAB7qzggsDJKQYsHucSkOudrkiCPWR/fA2nYCn8SNIK4NptSMyAu3sAdDRkIsJdfth0LzSrODUoPNZ4KI9SxJI5UHk7D4GdQfz2us31c7CoHMjRkKuDPHseCMrONVhNcDJwMJpKFVvg9L4OaTiNWm1x789KCqkrXhVBiEz0WYCT2nAzQAD1/vaETv1GrRfP4Vx5cfMNcDPwvP0h0DhanPym7OIf/+O67vcJ1/PCJ4KgdzaUP6Wz+dU+5yIL6fV+PsHGAOdwlPpvvUOyeeAVGyCdqkDNB6DPjsBSrnndfOGevOh3RhGItxvA+fX1CtbGFhgYUFkFMZPR6F1HnClHq8HyubWtJexX06CRmdt33hrd7nA7SFY4qoGpnYuOKcRykPPgDCBcsHx9Iv+fNL2PueBehCWUfYQIIMGLOCcOmXDXsh1+yCt35tUPfvzGFuSvzvoinXOxqa02qOhM6733nVP2MAdaej2XN11DPKjLZCD+yBvahGCo7JfTKAN9UD7s8Oe9zUNIhz8fWI8DG2k38WCFdxugANcXrvTVd1IEbuv3Jour7Hzn7jLMBNfKs7R3i67gRVrbeCOEDhinmWhAatsqdquM2XzHZINhK2cqTjHr/XZdVJUbgN3MWAVXKbSyg9jesRW2xP9di+lwrL5ojM3m2H/kG9hwcIA37c71W6wJdW2J2S5nrjYbq/t1AHAhJsKQeyfPvf6IMJgghPJhFZ4x0KlfLFvt22du45Au/A1SOlGc0P672XXwhLtOcM0kTTEMMd0qkVmMNXxMd/tsedUjInr4SQDgOfeXMSiN0FCL5WHah4L1qqYXPJOJlttd+a5M+YpcG5poLYKQ5f+6JJ4r8bbJYP47hq4r7QAs9PjYNhHJd4o8l5taiwuOpa7AS4XKqI/5NjJbTnaWK92nLdLuhQAJayRNMiygXPBeQN+Qbvu0zDc3y+aUzhbkGR73sI7ljvUnndx2q3t+X8CDAD66FtrIL864AAAAABJRU5ErkJggg==" alt style="border:0pt none">
+</a></div>
+ </div>
+ </div>
+</div>
+ <div id=content>
+ <div id=content-inner>
+ <div id=alpha>
+ <div id=alpha-inner>
+ <div id=entry-1696 class="entry-asset asset hentry">
+ <div class=asset-header>
+<div class="asset-nav entry-nav">
+<div class=entry-location>
+<ul>
+<li>上一篇：<a href=https://www.ruanyifeng.com/blog/2011/12/zen_and_the_art_of_motorcycle_maintenance.html title=《禅与摩托车维修艺术》读后感>《禅与摩托车维修艺术》</a></li>
+<li>下一篇：<a href=https://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html title=SSH原理与运用（二）：远程操作与端口转发>SSH原理与运用（二）</a></li>
+</ul>
+</div>
+ 
+ <div class=entry-categories>
+ <p>分类<span class=delimiter>：</span></p>
+ <ul>
+ <li><a href=https://www.ruanyifeng.com/blog/computer/ rel=tag>理解计算机</a></li>
+ </ul>
+ </div>
+ 
+ 
+<div class="entry-location-mobile sf-hidden" style=float:right>
+</div>
+</div>
+</div>
+ 
+<article class=hentry>
+ <h1 id=page-title class="asset-name entry-title">SSH原理与运用（一）：远程登录</h1>
+<div class=asset-meta>
+ 
+ <p class="vcard author">作者： <a class="fn url" href=https://www.ruanyifeng.com/>阮一峰</a></p>
+ <p>日期： <a href=https://www.ruanyifeng.com/blog/2011/12/><abbr class=published title=2011-12-21T18:18:42+08:00>2011年12月21日</abbr></a></p>
+</div>
+ 
+ <div class="asset-content entry-content" id=main-content>
+ 
+ <p>SSH是每一台Linux电脑的标准配置。</p>
+ 
+ 
+ <p>随着Linux设备从电脑逐渐扩展到手机、外设和家用电器，SSH的使用范围也越来越广。不仅程序员离不开它，很多普通用户也每天使用。</p>
+<p>SSH具备多种功能，可以用于很多场合。有些事情，没有它就是办不成。本文是我的学习笔记，总结和解释了SSH的常见用法，希望对大家有用。</p>
+<p>虽然本文内容只涉及初级应用，较为简单，但是需要读者具备最基本的"Shell知识"和了解"公钥加密"的概念。如果你对它们不熟悉，我推荐先阅读<a href=http://www.ee.surrey.ac.uk/Teaching/Unix/ target=_blank>《UNIX / Linux 初学者教程》</a>和<a href=https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html target=_blank>《数字签名是什么？》</a>。</p>
+<p>=======================================</p>
+<p><strong>SSH原理与运用</strong></p>
+<p>作者：阮一峰</p>
+<p><img src="data:image/jpeg;base64,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"></p>
+<p><strong>一、什么是SSH？</strong></p>
+<p>简单说，SSH是一种网络协议，用于计算机之间的加密登录。</p>
+<p>如果一个用户从本地计算机，使用SSH协议登录另一台远程计算机，我们就可以认为，这种登录是安全的，即使被中途截获，密码也不会泄露。</p>
+<p>最早的时候，互联网通信都是明文通信，一旦被截获，内容就暴露无疑。1995年，芬兰学者Tatu Ylonen设计了SSH协议，将登录信息全部加密，成为互联网安全的一个基本解决方案，迅速在全世界获得推广，目前已经成为Linux系统的标准配置。</p>
+<p>需要指出的是，SSH只是一种协议，存在多种实现，既有商业实现，也有开源实现。本文针对的实现是<a href=http://www.openssh.com/ target=_blank>OpenSSH</a>，它是自由软件，应用非常广泛。</p>
+<p>此外，本文只讨论SSH在Linux Shell中的用法。如果要在Windows系统中使用SSH，会用到另一种软件<a href=http://www.chiark.greenend.org.uk/~sgtatham/putty target=_blank>PuTTY</a>，这需要另文介绍。</p>
+<p><strong>二、最基本的用法</strong></p>
+<p>SSH主要用于远程登录。假定你要以用户名user，登录远程主机host，只要一条简单命令就可以了。</p>
+<blockquote>
+<p>　　$ ssh user@host</p>
+</blockquote>
+<p>如果本地用户名与远程用户名一致，登录时可以省略用户名。</p>
+<blockquote>
+<p>　　$ ssh host</p>
+</blockquote>
+<p>SSH的默认端口是22，也就是说，你的登录请求会送进远程主机的22端口。使用p参数，可以修改这个端口。</p>
+<blockquote>
+<p>　　$ ssh -p 2222 user@host</p>
+</blockquote>
+<p>上面这条命令表示，ssh直接连接远程主机的2222端口。</p>
+<p><strong>三、中间人攻击</strong></p>
+<p>SSH之所以能够保证安全，原因在于它采用了公钥加密。</p>
+<p>整个过程是这样的：（1）远程主机收到用户的登录请求，把自己的公钥发给用户。（2）用户使用这个公钥，将登录密码加密后，发送回来。（3）远程主机用自己的私钥，解密登录密码，如果密码正确，就同意用户登录。</p>
+<p>这个过程本身是安全的，但是实施的时候存在一个风险：如果有人截获了登录请求，然后冒充远程主机，将伪造的公钥发给用户，那么用户很难辨别真伪。因为不像https协议，SSH协议的公钥是没有证书中心（CA）公证的，也就是说，都是自己签发的。</p>
+<p>可以设想，如果攻击者插在用户与远程主机之间（比如在公共的wifi区域），用伪造的公钥，获取用户的登录密码。再用这个密码登录远程主机，那么SSH的安全机制就荡然无存了。这种风险就是著名的<a href=https://en.wikipedia.org/wiki/Man-in-the-middle_attack target=_blank>"中间人攻击"</a>（Man-in-the-middle attack）。</p>
+<p>SSH协议是如何应对的呢？</p>
+<p><strong>四、口令登录</strong></p>
+<p>如果你是第一次登录对方主机，系统会出现下面的提示：</p>
+<blockquote>
+<p>　　$ ssh user@host</p>
+<p>　　The authenticity of host 'host (12.18.429.21)' can't be established.</p>
+<p>　　RSA key fingerprint is 98:2e:d7:e0:de:9f:ac:67:28:c2:42:2d:37:16:58:4d.</p>
+<p>　　Are you sure you want to continue connecting (yes/no)?</p>
+</blockquote> 
+<p>这段话的意思是，无法确认host主机的真实性，只知道它的公钥指纹，问你还想继续连接吗？</p>
+<p>所谓"公钥指纹"，是指公钥长度较长（这里采用RSA算法，长达1024位），很难比对，所以对其进行MD5计算，将它变成一个128位的指纹。上例中是98:2e:d7:e0:de:9f:ac:67:28:c2:42:2d:37:16:58:4d，再进行比较，就容易多了。</p>
+<p>很自然的一个问题就是，用户怎么知道远程主机的公钥指纹应该是多少？回答是没有好办法，远程主机必须在自己的网站上贴出公钥指纹，以便用户自行核对。</p>
+<p>假定经过风险衡量以后，用户决定接受这个远程主机的公钥。</p>
+<blockquote>
+<p>　　Are you sure you want to continue connecting (yes/no)? yes</p>
+</blockquote>
+<p>系统会出现一句提示，表示host主机已经得到认可。</p>
+<blockquote>
+<p>　　Warning: Permanently added 'host,12.18.429.21' (RSA) to the list of known hosts.</p>
+</blockquote> 
+<p>然后，会要求输入密码。</p>
+<blockquote>
+<p>　　Password: (enter password)</p>
+</blockquote>
+<p>如果密码正确，就可以登录了。</p>
+<p>当远程主机的公钥被接受以后，它就会被保存在文件$HOME/.ssh/known_hosts之中。下次再连接这台主机，系统就会认出它的公钥已经保存在本地了，从而跳过警告部分，直接提示输入密码。</p>
+<p>每个SSH用户都有自己的known_hosts文件，此外系统也有一个这样的文件，通常是/etc/ssh/ssh_known_hosts，保存一些对所有用户都可信赖的远程主机的公钥。</p>
+<p><strong>五、公钥登录</strong></p>
+<p>使用密码登录，每次都必须输入密码，非常麻烦。好在SSH还提供了公钥登录，可以省去输入密码的步骤。</p>
+<p>所谓"公钥登录"，原理很简单，就是用户将自己的公钥储存在远程主机上。登录的时候，远程主机会向用户发送一段随机字符串，用户用自己的私钥加密后，再发回来。远程主机用事先储存的公钥进行解密，如果成功，就证明用户是可信的，直接允许登录shell，不再要求密码。</p>
+<p>这种方法要求用户必须提供自己的公钥。如果没有现成的，可以直接用ssh-keygen生成一个：</p>
+<blockquote>
+<p>　　$ ssh-keygen</p>
+</blockquote>
+<p>运行上面的命令以后，系统会出现一系列提示，可以一路回车。其中有一个问题是，要不要对私钥设置口令（passphrase），如果担心私钥的安全，这里可以设置一个。</p>
+<p>运行结束以后，在$HOME/.ssh/目录下，会新生成两个文件：id_rsa.pub和id_rsa。前者是你的公钥，后者是你的私钥。</p>
+<p>这时再输入下面的命令，将公钥传送到远程主机host上面：</p>
+<blockquote>
+<p>　　$ ssh-copy-id user@host</p>
+</blockquote>
+<p>好了，从此你再登录，就不需要输入密码了。</p>
+<p>如果还是不行，就打开远程主机的/etc/ssh/sshd_config这个文件，检查下面几行前面"#"注释是否取掉。</p>
+<blockquote>
+<p>　　RSAAuthentication yes<br>
+　　PubkeyAuthentication yes<br>
+　　AuthorizedKeysFile .ssh/authorized_keys</p>
+</blockquote>
+<p>然后，重启远程主机的ssh服务。</p>
+<blockquote>
+<p>　　// ubuntu系统<br>
+　　service ssh restart</p>
+<p>　　// debian系统<br>
+　　/etc/init.d/ssh restart</p>
+</blockquote>
+<p><strong>六、authorized_keys文件</strong></p>
+<p>远程主机将用户的公钥，保存在登录后的用户主目录的$HOME/.ssh/authorized_keys文件中。公钥就是一段字符串，只要把它追加在authorized_keys文件的末尾就行了。<br>
+<br>
+这里不使用上面的ssh-copy-id命令，改用下面的命令，解释公钥的保存过程：</p>
+<blockquote>
+<p>　　$ ssh user@host 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' &lt; ~/.ssh/id_rsa.pub</p>
+</blockquote>
+<p>这条命令由多个语句组成，依次分解开来看：（1）"$ ssh user@host"，表示登录远程主机；（2）单引号中的mkdir .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys，表示登录后在远程shell上执行的命令：（3）"$ mkdir -p .ssh"的作用是，如果用户主目录中的.ssh目录不存在，就创建一个；（4）'cat &gt;&gt; .ssh/authorized_keys' &lt; ~/.ssh/id_rsa.pub的作用是，将本地的公钥文件~/.ssh/id_rsa.pub，重定向追加到远程文件authorized_keys的末尾。</p>
+<p>写入authorized_keys文件后，公钥登录的设置就完成了。</p>
+<p>==============================================</p>
+<p>关于shell远程登录的部分就写到这里，下一次接着介绍<a href=https://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html target=_blank>《远程操作和端口转发》</a>。</p>
+<p>（完）<br>
+</p>
+ 
+ </div>
+ 
+ <div class=asset-footer>
+<h3>文档信息</h3>
+<ul>
+<li>版权声明：自由转载-非商用-非衍生-保持署名（<a href=http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh>创意共享3.0许可证</a>）</li>
+<li>发表日期： <abbr class=published title=2011-12-21T18:18:42+08:00>2011年12月21日</abbr></li>
+</ul>
+ </div>
+</article>
+ </div>
+ <div style=display:inline-block!important;width:100%>
+ 
+ <div class="wwads-cn wwads-horizontal" data-id=197 style=max-width:100%></div>
+ </div>
+<div id=related_entries>
+<h2>相关文章</h2>
+<ul>
+<li><strong>2022.08.02: <a href=https://www.ruanyifeng.com/blog/2022/08/dns-query.html>DNS 查询原理详解</a></strong>
+ <div class=entry-body>
+ 通过 DNS 查询，得到域名的 IP 地址，才能访问网站。
+ </div>
+</li>
+ 
+<li><strong>2022.06.03: <a href=https://www.ruanyifeng.com/blog/2022/06/endianness-analysis.html>字节序探析：大端与小端的比较</a></strong>
+ <div class=entry-body>
+ 今天谈谈一个重要的计算机概念，大家可能都听说过它，但是很少深究，那就是字节序（Endianness）。
+ </div>
+</li>
+ 
+<li><strong>2022.02.04: <a href=https://www.ruanyifeng.com/blog/2022/02/10g-ethernet.html>万兆家庭网络的时代</a></strong>
+ <div class=entry-body>
+ 最近，我想将家里的网络设备，都升级到千兆。
+ </div>
+</li>
+ 
+<li><strong>2021.12.07: <a href=https://www.ruanyifeng.com/blog/2021/12/web3.html>为什么 Web3 与区块链有关</a></strong>
+ <div class=entry-body>
+ 互联网迄今有两个阶段：Web 1.0 和 Web 2.0。
+ </div>
+</li>
+ 
+</ul>
+</div>
+<div id=cre style=display:block>
+<h2>广告<a href=https://www.ruanyifeng.com/support.html>（购买广告位）</a></h2>
+<div id=cre-inner>
+<div id=cre-left>
+<p style=font-size:16px;text-align:center><a title=云手机 href="https://www.geelark.cn/?utm_source=ruanyifeng.com&amp;utm_medium=banner&amp;utm_campaign=campaign20250305" target=_blank>云手机</a></p>
+<a title=云手机 href="https://www.geelark.cn/?utm_source=ruanyifeng.com&amp;utm_medium=banner&amp;utm_campaign=campaign20250305" target=_blank>
+ <img alt='="云手机"' src="data:image/webp;base64,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" style=border:none>
+</a>
+</div>
+<div id=cre-right>
+</div>
+</div>
+</div>
+ 
+ <div id=comments class=comments style=!important>
+ 
+ 
+ 
+ <h2 class=comments-header>留言（84条）</h2>
+ <div id=comments-content class=comments-content style=clear:left>
+ 
+ <div id=comment-242986 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">南 靖男</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-242986>
+ <p>必须：<br>
+chmod 700 ~/.ssh<br>
+chmod 600 ~/.ssh/authorized_keys</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 21, 2011  6:55 PM">2011年12月21日 18:55</abbr>
+ | <a href=#comment-242986>#</a>
+ | <a href=#comment-text title="引用南 靖男的这条留言">引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-242996 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">dindog</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-242996>
+ <p>第一次接触ssh是git，这东西还是挺方便的。虽然我只是同步自己的小代码</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 21, 2011  8:49 PM">2011年12月21日 20:49</abbr>
+ | <a href=#comment-242996>#</a>
+ | <a href=#comment-text title=引用dindog的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-242997 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">paranonia</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-242997>
+ <p>chmod 700 ~/.ssh 必须</p>
+<p>chmod 600 ~/.ssh/authorized_keys 非必须</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 21, 2011  8:54 PM">2011年12月21日 20:54</abbr>
+ | <a href=#comment-242997>#</a>
+ | <a href=#comment-text title=引用paranonia的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243002 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">Coiby</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243002>
+ <p>这篇也不错，http://wowubuntu.com/ssh-tips.html，作者可以参考下，</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 21, 2011  9:16 PM">2011年12月21日 21:16</abbr>
+ | <a href=#comment-243002>#</a>
+ | <a href=#comment-text title=引用Coiby的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243018 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">icyomik</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243018>
+ <p>'mkdir .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys'<br>
+或者可以改为：<br>
+'mkdir .ssh ; cat &gt;&gt; .ssh/authorized_keys'</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 21, 2011 11:20 PM">2011年12月21日 23:20</abbr>
+ | <a href=#comment-243018>#</a>
+ | <a href=#comment-text title=引用icyomik的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243019 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">依云</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243019>
+ <p>mkdir -p .ssh ，不然可能出错，后面的命令不执行。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 21, 2011 11:25 PM">2011年12月21日 23:25</abbr>
+ | <a href=#comment-243019>#</a>
+ | <a href=#comment-text title=引用依云的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243021 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">Zind</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243021>
+ <p>我觉得好像有点儿不对劲啊……<br>
+远程主机上也不一定存在 authorized_keys 文件<br>
+所以，是不是应该这样：<br>
+'mkdir -p .ssh/authorized_keys &amp;&amp; cat &gt;&gt; .ssh/authorized_keys'</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 21, 2011 11:39 PM">2011年12月21日 23:39</abbr>
+ | <a href=#comment-243021>#</a>
+ | <a href=#comment-text title=引用Zind的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243051 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">Zind</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243051>
+ <p>呃，我错了……<br>
+'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' 就好，其它的会自己处理的</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 22, 2011  9:06 AM">2011年12月22日 09:06</abbr>
+ | <a href=#comment-243051>#</a>
+ | <a href=#comment-text title=引用Zind的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243053 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">yaoweibin</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243053>
+ <p>ssh（ssl/tls）的原理很复杂，如果不对网络安全和数学有深入研究，很难讲得清楚。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 22, 2011 10:05 AM">2011年12月22日 10:05</abbr>
+ | <a href=#comment-243053>#</a>
+ | <a href=#comment-text title=引用yaoweibin的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243058 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">Ansen</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243058>
+ <p>很详细的文章<br>
+谢谢博主</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 22, 2011 11:07 AM">2011年12月22日 11:07</abbr>
+ | <a href=#comment-243058>#</a>
+ | <a href=#comment-text title=引用Ansen的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243066 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">在路上</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243066>
+ <p>用虚拟主机非常方便</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 22, 2011 12:51 PM">2011年12月22日 12:51</abbr>
+ | <a href=#comment-243066>#</a>
+ | <a href=#comment-text title=引用在路上的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243077 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">mercurate</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243077>
+ <p>能否顺便讲讲非对称加密是如何做到的?</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 22, 2011  4:05 PM">2011年12月22日 16:05</abbr>
+ | <a href=#comment-243077>#</a>
+ | <a href=#comment-text title=引用mercurate的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243079 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">zhong.xu</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243079>
+ <p>博主的文章总是能让人看的明白。<br>
+自己知道还能讲解的让别人也知道，<br>
+我想这就是博主自身功力深厚的证明吧。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 22, 2011  5:00 PM">2011年12月22日 17:00</abbr>
+ | <a href=#comment-243079>#</a>
+ | <a href=#comment-text title=引用zhong.xu的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243103 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">daryl</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243103>
+ <p>中间一段错了，公钥永远是用来加密的，私钥永远是用来解密。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 22, 2011 11:31 PM">2011年12月22日 23:31</abbr>
+ | <a href=#comment-243103>#</a>
+ | <a href=#comment-text title=引用daryl的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243115 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">ssdt</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243115>
+ <p>不会是你看到我昨天用ssh,随便写了3个生成自己的ssh失败了，</p>
+<p>你就以为我不会就写了这篇吧</p>
+<p>我总怀疑你是个虚拟的人或者这文章不是你写的</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 23, 2011  2:29 AM">2011年12月23日 02:29</abbr>
+ | <a href=#comment-243115>#</a>
+ | <a href=#comment-text title=引用ssdt的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-243147 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">大头龙仔</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-243147>
+ <p>自从kernel.org被爆，现在多数改为公钥认证方式，password我平时只用在内网服务器。不过像VPS，如果开password认证，从auth.log可以看到，经常有人在试你密码。<br>
+这个是比较恶心的</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 23, 2011  9:05 AM">2011年12月23日 09:05</abbr>
+ | <a href=#comment-243147>#</a>
+ | <a href=#comment-text title=引用大头龙仔的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-244596 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">happypeter</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-244596>
+ <p>我参考你的这篇博客，做了个视频，谢谢<br>
+<a href=http://casts.happypeter.org/episodes/3 rel=nofollow>http://casts.happypeter.org/episodes/3</a></p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="January  7, 2012 10:14 PM">2012年1月 7日 22:14</abbr>
+ | <a href=#comment-244596>#</a>
+ | <a href=#comment-text title=引用happypeter的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-244637 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">Todd</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-244637>
+ <p>&gt;&gt;$ ssh user@host 'mkdir .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' 
+<p>这里最好用mkdir -p .ssh，保证不管.ssh是否已经存在都正确执行。<p></p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="January  8, 2012  1:39 PM">2012年1月 8日 13:39</abbr>
+ | <a href=#comment-244637>#</a>
+ | <a href=#comment-text title=引用Todd的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-244647 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">阮一峰</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-244647>
+ <p>@Todd：</p>
+<p>谢谢指出。</p>
+<p>我前面没有意识到，如果目录.ssh已经存在，mkdir .ssh会报错。我这就改过来，加上参数p。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="January  8, 2012  3:21 PM">2012年1月 8日 15:21</abbr>
+ | <a href=#comment-244647>#</a>
+ | <a href=#comment-text title=引用阮一峰的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-250228 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">simenyu</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-250228>
+ <p>用ssh-copy-id &lt;host&gt;木有成功，但也木有任何出错提示，完了之后ssh远端主机，还是需要输入密码。查看远端的authorized_keys文件，发现木有公钥字符串。<br>
+改用$ ssh &lt;host&gt; 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' 
+<p>不知道方法一哪里出问题了。<p></p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="March 11, 2012  9:54 AM">2012年3月11日 09:54</abbr>
+ | <a href=#comment-250228>#</a>
+ | <a href=#comment-text title=引用simenyu的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-250231 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">阮一峰</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-250231>
+ <p>@simenyu:</p>
+<p>参考下面的文章，好像是说远程端的权限设置的原因。</p>
+<p><a href=http://superuser.com/questions/189376/ssh-copy-id-does-not-work rel=nofollow>http://superuser.com/questions/189376/ssh-copy-id-does-not-work</a></p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="March 11, 2012 10:23 AM">2012年3月11日 10:23</abbr>
+ | <a href=#comment-250231>#</a>
+ | <a href=#comment-text title=引用阮一峰的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-250664 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">feynixs</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-250664>
+ <p>五、公钥登录，这部分应该写错了。<br>
+应该是：公匙是用来加密的，私匙用来解密的。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="March 17, 2012  1:51 PM">2012年3月17日 13:51</abbr>
+ | <a href=#comment-250664>#</a>
+ | <a href=#comment-text title=引用feynixs的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-265933 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">沙渺</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-265933>
+ <blockquote>
+<pre>引用feynixs的发言：</pre>
+<p>五、公钥登录，这部分应该写错了。<br>
+应该是：公匙是用来加密的，私匙用来解密的。</p>
+</blockquote>
+<p>公私钥是对等的吧，公加私解或者私加公解都只是用法问题</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="November 13, 2012  6:40 AM">2012年11月13日 06:40</abbr>
+ | <a href=#comment-265933>#</a>
+ | <a href=#comment-text title=引用沙渺的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-270468 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">Zernel</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-270468>
+ <p>不错，虽然每天工作都要接触到SSH，文章提到的这些操作之前也有用过，但根本不知道原理，只是知道这样做可以达到怎么样的效果，现在看完这篇文章后清晰了很多，谢谢阮老师。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="April  6, 2013  4:06 PM">2013年4月 6日 16:06</abbr>
+ | <a href=#comment-270468>#</a>
+ | <a href=#comment-text title=引用Zernel的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-270522 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">凯凯</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-270522>
+ <blockquote>
+<pre>引用沙渺的发言：</pre>
+<p></p>
+<p>公私钥是对等的吧，公加私解或者私加公解都只是用法问题</p>
+</blockquote>
+<p>我觉得“五、公钥登录”这部分是有问题的，我认为应该是这样：</p>
+<p>所谓"公钥登录"，原理很简单，就是用户将自己的公钥储存在远程主机上。登录的时候，远程主机会向用户发送一段用用户公钥加密的随机字符串，用户用自己的私钥解密后，再发回来。远程主机把这个信息和原始信息匹配，如果成功，就证明用户是可信的，直接允许登录shell，不再要求密码。（其实，用户用私钥解密之后得到原始信息X，还要用会话号P和X一起算md5发回给服务器，服务器用之前保存的会话号P和原始信息X做md5运算，和用户发回的信息匹配，如果成功，就证明用户是可信的）<br>
+</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="April  8, 2013  9:51 PM">2013年4月 8日 21:51</abbr>
+ | <a href=#comment-270522>#</a>
+ | <a href=#comment-text title=引用凯凯的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-270777 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">yinzhezq</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-270777>
+ <blockquote>
+<pre>引用yinzhezq的发言：</pre>
+<p>最好改为这样：'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys'</p>
+</blockquote>
+<p>'mkdir -p .ssh &amp;&amp; umask 066 &amp;&amp; cat &gt;&gt; .ssh/authorized_keys'<br>
+</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="April 15, 2013  3:50 PM">2013年4月15日 15:50</abbr>
+ | <a href=#comment-270777>#</a>
+ | <a href=#comment-text title=引用yinzhezq的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-272992 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">吕朋</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-272992>
+ <p>解释的再清晰不过了</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="August 10, 2013 10:19 PM">2013年8月10日 22:19</abbr>
+ | <a href=#comment-272992>#</a>
+ | <a href=#comment-text title=引用吕朋的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-292795 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">南蛮虫</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-292795>
+ <p>$ ssh user@host 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' 
+这条命令不成功，报错找不到~/.ssh/id_rsa.pub</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 13, 2013  2:36 PM">2013年12月13日 14:36</abbr>
+ | <a href=#comment-292795>#</a>
+ | <a href=#comment-text title=引用南蛮虫的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-293295 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">himagicxiao</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-293295>
+ <blockquote>
+<pre>引用南蛮虫的发言：</pre>
+<p>$ ssh user@host 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' <br>
+这条命令不成功，报错找不到~/.ssh/id_rsa.pub</p>
+</blockquote>
+<p>检查本地有没有~/.ssh/id_rsa.pub</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 16, 2013  6:05 PM">2013年12月16日 18:05</abbr>
+ | <a href=#comment-293295>#</a>
+ | <a href=#comment-text title=引用himagicxiao的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-304934 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">Jak Wings</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-304934>
+ <p>@凯凯：</p>
+<p>看他写的第三节「三、中间人攻击」，我估计是故意只强调客户端密钥的。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="March 27, 2014 11:02 PM">2014年3月27日 23:02</abbr>
+ | <a href=#comment-304934>#</a>
+ | <a href=#comment-text title="引用Jak Wings的这条留言">引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-306365 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">Karl</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-306365>
+ <p>$ ssh user@example.com 'mkdir -p .ssh &amp;&amp; touch .ssh/authorized_keys &amp;&amp; chmod 644 .s<br>
+sh/authorized_keys &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' </p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="April  1, 2014 12:13 PM">2014年4月 1日 12:13</abbr>
+ | <a href=#comment-306365>#</a>
+ | <a href=#comment-text title=引用Karl的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-324504 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">BlueIceQ</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-324504>
+ <blockquote>
+<pre>引用feynixs的发言：</pre>
+<p>五、公钥登录，这部分应该写错了。<br>
+应该是：公匙是用来加密的，私匙用来解密的。</p>
+</blockquote>
+<p>在"加密数据"时，是公钥加密，私钥解密；但是在"身份认证"时，是私钥加密，公钥解密，你想啊，私钥就一个，公钥可以有多个，即多个公钥对应一个私钥，加密的数据用公钥解出来了，那肯定就知对应的私钥是谁了，这就验证了身份了。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="May 21, 2014  6:59 PM">2014年5月21日 18:59</abbr>
+ | <a href=#comment-324504>#</a>
+ | <a href=#comment-text title=引用BlueIceQ的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-324507 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">BlueIceQ</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-324507>
+ <blockquote>
+<pre>引用凯凯的发言：</pre>
+<p></p>
+<p>我觉得“五、公钥登录”这部分是有问题的，我认为应该是这样：</p>
+<p>所谓"公钥登录"，原理很简单，就是用户将自己的公钥储存在远程主机上。登录的时候，远程主机会向用户发送一段用用户公钥加密的随机字符串，用户用自己的私钥解密后，再发回来。远程主机把这个信息和原始信息匹配，如果成功，就证明用户是可信的，直接允许登录shell，不再要求密码。（其实，用户用私钥解密之后得到原始信息X，还要用会话号P和X一起算md5发回给服务器，服务器用之前保存的会话号P和原始信息X做md5运算，和用户发回的信息匹配，如果成功，就证明用户是可信的）</p>
+<p><br>
+</p></blockquote>
+<p>如果远程主机上面有多个公钥，那它选择那个公钥来对数据进行加密呢?但是如果发送的是明文，用户用私钥加密，发送到远程主机，远程主机就可以遍历公钥来对数据解密了。不要说远程主机会遍历公钥来对数据加密发送给用户啊，这明显是浪费时间的。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="May 21, 2014  7:06 PM">2014年5月21日 19:06</abbr>
+ | <a href=#comment-324507>#</a>
+ | <a href=#comment-text title=引用BlueIceQ的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-324508 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">BlueIceQ</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-324508>
+ <blockquote>
+<pre>引用沙渺的发言：</pre>
+<p></p>
+<p>公私钥是对等的吧，公加私解或者私加公解都只是用法问题</p>
+</blockquote>
+<p>明显身份认证的时候私加公解划算啊。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="May 21, 2014  7:08 PM">2014年5月21日 19:08</abbr>
+ | <a href=#comment-324508>#</a>
+ | <a href=#comment-text title=引用BlueIceQ的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-328465 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">luochen1990</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-328465>
+ <p>稍稍纠正一下, centos 重启应该是 sudo /etc/init.d/sshd restart 对么?<br>
+另外补充一点跳坑信息, 如果是刚刚创建 ~/.ssh/authorized_keys 的话, 要注意该文件的权限, 可以改成如: chmod 640 ~/.ssh/authorized_keys</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="June 13, 2014  6:33 PM">2014年6月13日 18:33</abbr>
+ | <a href=#comment-328465>#</a>
+ | <a href=#comment-text title=引用luochen1990的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-330492 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">Jason</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-330492>
+ <p>写得实在太好了！简洁明了！非常感谢！</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="July  8, 2014 10:42 AM">2014年7月 8日 10:42</abbr>
+ | <a href=#comment-330492>#</a>
+ | <a href=#comment-text title=引用Jason的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-346475 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">hellowed</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-346475>
+ <p>写的很清楚，阮老师</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 19, 2014  2:54 PM">2014年12月19日 14:54</abbr>
+ | <a href=#comment-346475>#</a>
+ | <a href=#comment-text title=引用hellowed的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-347419 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">yjs</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-347419>
+ <p>感谢，<br>
+口令登陆ssh遵循公钥加密、公钥解密;win客户端登陆 ①向远端主机发送请求 ②远程主机发给win客户一个公钥(类似一个没有上锁的盒子),win客户将密码放入上锁后再次还给远程主机 ③远程主机用私钥打开公钥(盒子),验证密码一致允许登陆。<br>
+ ssh公钥登陆同样遵循私钥加密、公钥解密;linux客户端先生成ssh公钥事先给远程主机更名为authorized_keys，①linux客户端向远程主机发送连接,远程主机随意发给linux客户端一串字符串 ②linux客户端用私钥加密字符串返还给远程主机 ③远程主机用事先存储的公钥进行解密,如果和事先发送的字符串一致则允许登陆。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="January 22, 2015 11:17 PM">2015年1月22日 23:17</abbr>
+ | <a href=#comment-347419>#</a>
+ | <a href=#comment-text title=引用yjs的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-347565 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">nyuxiao</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-347565>
+ <p>“……middle attack）。<br>
+SSH协议是如何应对的呢？<br>
+四、口令登录”</p>
+<p>这个“如何应对”指的是应对中间人攻击吗？</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="January 27, 2015  7:14 PM">2015年1月27日 19:14</abbr>
+ | <a href=#comment-347565>#</a>
+ | <a href=#comment-text title=引用nyuxiao的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-348409 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">notracy</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-348409>
+ <p>很是实用，感谢博主</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="March 10, 2015  6:28 AM">2015年3月10日 06:28</abbr>
+ | <a href=#comment-348409>#</a>
+ | <a href=#comment-text title=引用notracy的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-348656 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">wlb</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-348656>
+ <p>对这句执行的顺序有点不明白<br>
+cat &gt;&gt; .ssh/authorized_keys' </p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="March 18, 2015  9:17 PM">2015年3月18日 21:17</abbr>
+ | <a href=#comment-348656>#</a>
+ | <a href=#comment-text title=引用wlb的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-351233 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">AutumnLight</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-351233>
+ <p>楼主这一篇讲的太好了，井井有条。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="August 12, 2015 12:02 PM">2015年8月12日 12:02</abbr>
+ | <a href=#comment-351233>#</a>
+ | <a href=#comment-text title=引用AutumnLight的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-352670 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">aoniao</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-352670>
+ <blockquote>
+所谓"公钥登录"，原理很简单，就是用户将自己的公钥储存在远程主机上。登录的时候，远程主机会向用户发送一段随机字符串，用户用自己的私钥加密后，再发回来。远程主机用事先储存的公钥进行解密，如果成功，就证明用户是可信的，直接允许登录shell，不再要求密码。
+</blockquote>
+<p>这部分应该是有问题的。不会使用私钥去加密，公钥是解密的。参考这里的解释，http://www.unixwiz.net/techtips/ssh-agent-forwarding.html#chal</p>
+<p>下面这个摘录自 skypeGNU1 的BLOG 的解释就合理。<br>
+<blockquote><br>
+当需要连接到SSH服务器上时，客户端软件就会向服务器发出请求，请求使用客户端的密钥进行安全验证。服务器收到请求之后，先在该用户的根目录下寻找共有密钥，然后把它和发送过来的公有密钥进行比较。如果两个密钥一致，服务器就用公有的密钥加密“质询”，并把它发送给客户端软件（putty,xshell等）。客户端收到质询之后，就可以用本地的私人密钥解密再把它发送给服务器，这种方式是相当安全的。<br>
+</blockquote><p></p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="November  9, 2015 12:31 AM">2015年11月 9日 00:31</abbr>
+ | <a href=#comment-352670>#</a>
+ | <a href=#comment-text title=引用aoniao的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-353087 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">谢宏浩</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-353087>
+ <p>感觉 公钥登录 完全没有解决中间人攻击的问题 </p>
+<p>下面是原文摘抄 我加了些标号<br>
+“所谓"公钥登录"，原理很简单，就是用户将自己的公钥储存在远程主机上。1 登录的时候，远程主机会向用户发送一段随机字符串，2 用户用自己的私钥加密后，再发回来。3 远程主机用事先储存的公钥进行解密，如果成功，就证明用户是可信的，直接允许登录shell，不再要求密码。”</p>
+<p>我的观点： <br>
+如果2过程中发送的数据被中间人截取了， 中间人发送到了远程主机， 远程主机会把中间人作为可信用户 对吧？ 如此如何防止中间人攻击?</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December  4, 2015  7:12 PM">2015年12月 4日 19:12</abbr>
+ | <a href=#comment-353087>#</a>
+ | <a href=#comment-text title=引用谢宏浩的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-354079 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">王松</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-354079>
+ <blockquote>
+<pre>引用daryl的发言：</pre>
+<p>中间一段错了，公钥永远是用来加密的，私钥永远是用来解密。</p>
+</blockquote>
+<p>公钥和私钥本身都是既可以加密也可以解密的，公钥加密私钥解密是正常的非对称加密过程，私钥加密公钥解密应该就是数字签名的过程了。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="January 17, 2016  1:10 PM">2016年1月17日 13:10</abbr>
+ | <a href=#comment-354079>#</a>
+ | <a href=#comment-text title=引用王松的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-354218 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">胡扯</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-354218>
+ <p>卧槽，误导啊，公钥私钥谁加密谁解密都没弄明白，还来说ssh？</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="January 21, 2016  4:04 PM">2016年1月21日 16:04</abbr>
+ | <a href=#comment-354218>#</a>
+ | <a href=#comment-text title=引用胡扯的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-354359 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">jjnet</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-354359>
+ <blockquote>
+<pre>引用沙渺的发言：</pre>
+<p></p>
+<p>公私钥是对等的吧，公加私解或者私加公解都只是用法问题</p>
+</blockquote>
+<p>从非对称算法角度上， 有两个数e和d, 不等于d，通过公开函数f1(e,p)得到m<br>
+同样，也可以通过公开函数f2(d,m)得到p， 其中m是原始文本而p是经过变换后的文本。<br>
+一般而言成为为【编码】和【解码】， 其中持有e的人编码后的数据只有持有d的人能解码，<br>
+同样持有d的人编码后只有e能解。 这里习惯性的吧e定义为【公钥】，d定义为【私钥】<br>
+作为公钥私钥的生成着会保存【私钥】（大多数情况下私钥文件里面也会包含公钥），<br>
+然后讲【公钥】广而告之。</p>
+<p><br>
+注意【编码】和【解码】和【加密】【解密】是有差别的。<br>
+密码学里面， 对文字进行编码后，只有特定的对象（对方）能够解码。 符合这种语义<br>
+的编解码方式称之为【加密】和【解密】。<br>
+显然用【私钥】去【编码】后的数据不能叫【加密】的，因为【公钥】所有人都知道，失去了<br>
+加密的意义。 在公钥私钥系统中， 统一采用【公钥】加密和【私钥】解密。</p>
+<p>而且【私钥】去编码数据【公钥】再去解码数据也并不是没有意义，只是习惯性称之为【签名】<br>
+即保证这块数据由【私钥】的持有者生成而不是不让人看到数据是什么<br>
+（因为大家都有公钥都能解都能证明--比如约定解出来的数据带一个尾巴hahaha，那么所有符合xxxxhahaha的数据都可以认为是私钥发送的别人不能伪造的，发送<br>
+的有效数据是xxxx）</p>
+<p>其中用e进行 一个公钥对应一个私钥，</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="January 27, 2016  4:48 PM">2016年1月27日 16:48</abbr>
+ | <a href=#comment-354359>#</a>
+ | <a href=#comment-text title=引用jjnet的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-356166 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">jay</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-356166>
+ <blockquote>
+<pre>引用daryl的发言：</pre>
+<p>中间一段错了，公钥永远是用来加密的，私钥永远是用来解密。</p>
+</blockquote>
+<p>瞎扯</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="May 10, 2016 11:54 PM">2016年5月10日 23:54</abbr>
+ | <a href=#comment-356166>#</a>
+ | <a href=#comment-text title=引用jay的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-357057 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">linchen1987</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-357057>
+ <blockquote>
+<pre>引用paranonia的发言：</pre>
+<p>chmod 700 ~/.ssh 必须</p>
+<p>chmod 600 ~/.ssh/authorized_keys 非必须</p>
+</blockquote>
+<p>谢谢！</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="June  3, 2016 12:22 PM">2016年6月 3日 12:22</abbr>
+ | <a href=#comment-357057>#</a>
+ | <a href=#comment-text title=引用linchen1987的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-363004 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">dingding</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-363004>
+ <p>请问这样就可以远程登录主机了吗？我租的服务器一直上不去，好奇怪。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="August 23, 2016  5:14 PM">2016年8月23日 17:14</abbr>
+ | <a href=#comment-363004>#</a>
+ | <a href=#comment-text title=引用dingding的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-364099 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">robinjia</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-364099>
+ <p>还需要设置~/.ssh/authorized_keys的权限，否则在/var/log/secure里可以看到提示Authentication refused: bad ownership or modes for file。经测试，只有文件所有者有写权限时，才可以登录服务器。所以authorized_keys为640，600都可以登录服务器。但不能是660,620等。而执行完上面的命令，authorized_keys为660,需要修改这个文件的权限。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="September  9, 2016  8:55 AM">2016年9月 9日 08:55</abbr>
+ | <a href=#comment-364099>#</a>
+ | <a href=#comment-text title=引用robinjia的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-364162 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">robinjia</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-364162>
+ <p>发现还需要设置.ssh的权限，因为.ssh目录必须700才允许登录，而mkdir -p .ssh新建的目录权限是755.</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="September  9, 2016  9:21 PM">2016年9月 9日 21:21</abbr>
+ | <a href=#comment-364162>#</a>
+ | <a href=#comment-text title=引用robinjia的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-365283 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">格桑花</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-365283>
+ <p>阮老师: 我有一个疑问,还望解答,谢谢.</p>
+<p>中间人攻击那一端里面有如下一段:<br>
+整个过程是这样的：（1）远程主机收到用户的登录请求，把自己的公钥发给用户。（2）用户使用这个公钥，将登录密码加密后，发送回来。（3）远程主机用自己的私钥，解密登录密码，如果密码正确，就同意用户登录。</p>
+<p>经测试, 1. 远程主机 foo 用户并未生成公钥和密钥,也就是 /home/foo/.ssh/目录下并未存在 id_rsa.pub和id_rsa;<br>
+ 2. 本地主机 bar 用户并未生成公钥和密钥,也就是/home/bar/.ssh/目录下并未存在 id_rsa.pub和id_rsa;<br>
+ 3. 本地主机 bar 用户运行 ssh foo@remote_serv, 输入yes加入known_hosts后再输入密码可成功登入 remote_serv<br>
+疑问: 远程主机未生成公钥和私钥,如何发送自己的公钥给本地主机呢?</p>
+<p>实验结果和讲解不符, 不知道是不是我理解错了呢?<br>
+</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="September 27, 2016  5:28 PM">2016年9月27日 17:28</abbr>
+ | <a href=#comment-365283>#</a>
+ | <a href=#comment-text title=引用格桑花的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-369389 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">郑</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-369389>
+ <p>发现，known_hosts里存入的不知道是什么东西，反正和对应主机的公钥不同，能详细说一下，这个中间是怎么加密的吗，用的什么加密算法</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="November 29, 2016 10:31 AM">2016年11月29日 10:31</abbr>
+ | <a href=#comment-369389>#</a>
+ | <a href=#comment-text title=引用郑的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-369727 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">区影</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-369727>
+ <p>很赞的文章。之前一直没理解为什么第一次会提示“The authenticity of host 'host (12.18.429.21)' can't be established.”，感谢。</p>
+<p>另外，在“公钥登陆”章节，您提到“登录的时候，远程主机会向用户发送一段随机字符串，用户用自己的私钥加密后，再发回来。远程主机用事先储存的公钥进行解密，如果成功，就证明用户是可信的，直接允许登录shell，不再要求密。” 这段话，个人有几点想交换下意见的地方：<br>
+（1）通常术语上私钥加密说成签名，公钥解密说成验签。从数学上是类似操作，但用途上签名和验签是为了证明“对方是对方”，而加密和解密是为了“发来的信息没被人偷看”，更严谨的安全会话是加密和签名同时用，因为正如您说的加密不能证明发消息的人是靠谱的。<br>
+（2）客户端与服务器是多对1的关系。“远程主机用事先储存的公钥进行解密”，如何从一堆公钥中找到当前客户端的公钥，少了一个公钥索引的点。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December  4, 2016  9:05 AM">2016年12月 4日 09:05</abbr>
+ | <a href=#comment-369727>#</a>
+ | <a href=#comment-text title=引用区影的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-370031 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">domen</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-370031>
+ <p>就我一个人很在意这个配图吗。。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December  8, 2016  2:36 PM">2016年12月 8日 14:36</abbr>
+ | <a href=#comment-370031>#</a>
+ | <a href=#comment-text title=引用domen的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-370038 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">你好明天</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-370038>
+ <p>window下我使用给gitbash也挺好用的</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December  8, 2016  5:09 PM">2016年12月 8日 17:09</abbr>
+ | <a href=#comment-370038>#</a>
+ | <a href=#comment-text title=引用你好明天的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-370556 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">cui</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-370556>
+ <p>公钥登陆部分，是客户端将自己的公钥发送到服务端，服务端用客户端的公钥加密一个256位的随机字符串，客户端接收后解密，然后将这个字符串和会话标识符合并在一起，对结果应用MD5散列函数并把散列值返回给服务器，服务器进行相同的MD5散列函数，如果客户端和该值可以匹配，那么匹配成功。</p>
+<p><br>
+望更正。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 18, 2016  8:16 PM">2016年12月18日 20:16</abbr>
+ | <a href=#comment-370556>#</a>
+ | <a href=#comment-text title=引用cui的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-372362 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">guanxianseng</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-372362>
+ <p>今天用github在github上保存ssh公钥，看到这里的公钥登录，明白了是怎么回事了</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="February  5, 2017 11:06 AM">2017年2月 5日 11:06</abbr>
+ | <a href=#comment-372362>#</a>
+ | <a href=#comment-text title=引用guanxianseng的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-372953 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">年华果腹</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-372953>
+ <blockquote>
+<pre>引用cui的发言：</pre>
+<p>公钥登陆部分，是客户端将自己的公钥发送到服务端，服务端用客户端的公钥加密一个256位的随机字符串，客户端接收后解密，然后将这个字符串和会话标识符合并在一起，对结果应用MD5散列函数并把散列值返回给服务器，服务器进行相同的MD5散列函数，如果客户端和该值可以匹配，那么匹配成功。</p>
+<p><br>
+望更正。</p>
+</blockquote>
+<p>很详细，确实是这样的。关于会话标识符想说的一点是客户端与服务器实际上是先有会话加密过程，再进行的客户端验证，所以这个会话标识符就是第一个阶段生成的共享密钥。<br>
+</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="February 15, 2017 10:59 AM">2017年2月15日 10:59</abbr>
+ | <a href=#comment-372953>#</a>
+ | <a href=#comment-text title=引用年华果腹的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-376794 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">付辉</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-376794>
+ <p><br>
+- client向server端请求（用户A想访问server系统下的账户B）,该请求中包含public-key的modulus<br>
+- server读取B账户，查找是否存在匹配的public-key。如果不存在，请求失败。<br>
+- server端生成一个256 bit的字符串，用匹配的public-key加密发给client<br>
+- client端用自己的私钥解密数据，然后和当前的session identifier HASH生成md5值发给server<br>
+- server重新计算md5值，跟client进行比较<br>
+</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="April 30, 2017  3:01 PM">2017年4月30日 15:01</abbr>
+ | <a href=#comment-376794>#</a>
+ | <a href=#comment-text title=引用付辉的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-377322 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">随风</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-377322>
+ <p>@cui：</p>
+<p>你所说的就是md54的对称加密方法吧<br>
+</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="May 21, 2017 10:13 AM">2017年5月21日 10:13</abbr>
+ | <a href=#comment-377322>#</a>
+ | <a href=#comment-text title=引用随风的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-378595 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">123456</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-378595>
+ <p>五、公钥登录<br>
+这段写错了，博主赶紧改改，不要误导他人。<br>
+参见：<br>
+<a href=https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys rel=nofollow>https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys</a><br>
+<a href=https://www.digitalocean.com/community/tutorials/understanding-the-ssh-encryption-and-connection-process rel=nofollow>https://www.digitalocean.com/community/tutorials/understanding-the-ssh-encryption-and-connection-process</a></p>
+<p>当然，也有可能博主是对的，这个只有撸过源码才能确定，有没有朋友有兴趣有时间找到真相的？</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="July  9, 2017  4:29 PM">2017年7月 9日 16:29</abbr>
+ | <a href=#comment-378595>#</a>
+ | <a href=#comment-text title=引用123456的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-378596 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">榛子</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-378596>
+ <p>阮老师，关于你说的这一段我有点无法理解：<br>
+“很自然的一个问题就是，用户怎么知道远程主机的公钥指纹应该是多少？回答是没有好办法，远程主机必须在自己的网站上贴出公钥指纹，以便用户自行核对。”<br>
+如果远程主机在自己网站上贴出来公钥指纹， 那么中间人也可以知道这个呀，再把假的公钥指纹发给你不就好了吗，这样你也无法判断了呀。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="July  9, 2017  6:23 PM">2017年7月 9日 18:23</abbr>
+ | <a href=#comment-378596>#</a>
+ | <a href=#comment-text title=引用榛子的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-378928 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">阿布</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-378928>
+ <p>@榛子：</p>
+<p>同樣是關於公鑰的問題，既然我們可以通過主機的網站來確認指紋是否正確，那主機直接在網站上公布自己的公鑰就好了，我們收到的公鑰對不對，對比網站上的公鑰就知道了。這樣想的話，指紋的存在好像是多餘的？</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="July 25, 2017 10:27 PM">2017年7月25日 22:27</abbr>
+ | <a href=#comment-378928>#</a>
+ | <a href=#comment-text title=引用阿布的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-378930 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">austyywl</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-378930>
+ <p>@榛子：</p>
+<p>远程主机发送的，不是指纹(摘要），而是公钥本身，而指纹，是不可逆的，中间人知道了指纹，但无法推算出公钥，所以，是无法伪造公钥。<br>
+</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="July 26, 2017 12:16 AM">2017年7月26日 00:16</abbr>
+ | <a href=#comment-378930>#</a>
+ | <a href=#comment-text title=引用austyywl的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-378931 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">austyywl</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-378931>
+ <p>@阿布：</p>
+<p>兄弟，文章中不是说了，公钥太长，不方便比对吗</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="July 26, 2017 12:19 AM">2017年7月26日 00:19</abbr>
+ | <a href=#comment-378931>#</a>
+ | <a href=#comment-text title=引用austyywl的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-378932 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">austyywl</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-378932>
+ <p>关于公钥登录这一部分，我一开始的理解也是觉得有问题，一般我们都认为公钥加密，私钥解密，这个可能是非对称加密最常用的功能，大家可以参考下这个网页，RSA算法的作用：认证。<br>
+<a href=http://www.cnblogs.com/scofi/p/6617394.html rel=nofollow>http://www.cnblogs.com/scofi/p/6617394.html</a></p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="July 26, 2017 12:36 AM">2017年7月26日 00:36</abbr>
+ | <a href=#comment-378932>#</a>
+ | <a href=#comment-text title=引用austyywl的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-379027 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">kim</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-379027>
+ <p></p>
+<p>When a client connects to the host, wishing to use SSH key authentication, it will inform the server of this intent and will tell the server which public key to use. The server then check its authorized_keys file for the public key, generate a random string and encrypts it using the public key. This encrypted message can only be decrypted with the associated private key. The server will send this encrypted message to the client to test whether they actually have the associated private key.</p>
+<p>Upon receipt of this message, the client will decrypt it using the private key and combine the random string that is revealed with a previously negotiated session ID. It then generates an MD5 hash of this value and transmits it back to the server. The server already had the original message and the session ID, so it can compare an MD5 hash generated by those values and determine that the client must have the private key.</p>
+<p>说的很清楚啦这段</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="July 27, 2017  8:19 PM">2017年7月27日 20:19</abbr>
+ | <a href=#comment-379027>#</a>
+ | <a href=#comment-text title=引用kim的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-379095 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">austyywl</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-379095>
+ <blockquote>
+<pre>引用kim的发言：</pre>
+<p>...</p>
+<p>说的很清楚啦这段</p>
+</blockquote>
+<p>当客户端希望通过SSH KEY 鉴权登录时，它会告诉服务端，并附带上自己的公钥KEY信息。服务端检查它的KEY文件，同时生成一个随机串，并且用公钥加密。加密过的随机串，只有客户端用自己的私钥才可以解。<br>
+一旦收到消息，客户端将用自己的私钥解密，获取到随机串，同时，将先前跟服务端商定的SESSIONID一起，再次做MD5一致性HASH（md5(randomKey,sessionId），发回给服务端。服务端也按同样的方式生成摘要，如果两者一致，则验证通过。</p>
+<blockquote>
+所谓"公钥登录"，原理很简单，就是用户将自己的公钥储存在远程主机上。登录的时候，远程主机会向用户发送一段随机字符串，用户用自己的私钥加密后，再发回来。远程主机用事先储存的公钥进行解密，如果成功，就证明用户是可信的，直接允许登录shell，不再要求密码。
+</blockquote>
+<p>感觉还是有差异，网上也没能找到权威的解释</p>
+<p>@kim ，能提供下出处吗？</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="July 30, 2017  2:14 PM">2017年7月30日 14:14</abbr>
+ | <a href=#comment-379095>#</a>
+ | <a href=#comment-text title=引用austyywl的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-382202 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">二哈</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-382202>
+ <blockquote>
+<pre>引用沙渺的发言：</pre>
+<p>公私钥是对等的吧，公加私解或者私加公解都只是用法问题</p>
+</blockquote>
+<p>这里讨论的这个有没有一个正确的结论？如果不确定就不要把大家误导了，ssh rsa是非对称加密吧？</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="November  9, 2017  9:08 PM">2017年11月 9日 21:08</abbr>
+ | <a href=#comment-382202>#</a>
+ | <a href=#comment-text title=引用二哈的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-382204 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">我是谁</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-382204>
+ <p>@凯凯：</p>
+<p>和其他网站将的不一样，谁能告诉我哪个说的是对的？！！</p>
+<p>参看：https://www.cnblogs.com/hukey/p/6248468.html</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="November  9, 2017  9:19 PM">2017年11月 9日 21:19</abbr>
+ | <a href=#comment-382204>#</a>
+ | <a href=#comment-text title=引用我是谁的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-383504 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">羊羊羊</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-383504>
+ <p>阮老师，我想请问对于公钥登陆的方式，为什么就能阻止中间人攻击呢？ </p>
+<p>我做过小测试，不管口令登录还是公钥登录，第一次尝试连接的时候都会有 The authenticity of host 'host (11.22.33.44)' can't be established.这个提示，让我们判断主机是否是真实的。 如果这个IP是假的， 对于口令登录会丢失账号密码，即受到了中间人攻击；而对于公钥登录呢？我们虽然并没有丢失自己的密钥，但是也没能和真正的主机建立联系呀？</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="December 23, 2017 10:27 AM">2017年12月23日 10:27</abbr>
+ | <a href=#comment-383504>#</a>
+ | <a href=#comment-text title=引用羊羊羊的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-387806 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">kur0mi</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-387806>
+ <p>之前对ssh只看了一些简单的，这次认真重新看了一遍，感觉很多东西都变得更透彻了，中间人攻击，公钥验证，密码登录验证的原理等等，通俗易懂，大赞</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="April 10, 2018 10:53 AM">2018年4月10日 10:53</abbr>
+ | <a href=#comment-387806>#</a>
+ | <a href=#comment-text title=引用kur0mi的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-388628 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">june</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-388628>
+ <p>感觉中间人那部分没有讲完，可能部分人还不理解，当主机的公钥追加到该主机本地文件~/.ssh/known_hosts中后，下次登陆时如果因为某些原因发生服务器ip改变(如中间人攻击)，会报错Host key verification failed.这样就要再次确认ssh登陆的IP，可以有效防止中间人攻击</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="May  7, 2018 10:52 AM">2018年5月 7日 10:52</abbr>
+ | <a href=#comment-388628>#</a>
+ | <a href=#comment-text title=引用june的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-389341 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">小佐同学</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-389341>
+ <p>无意看到这片博客，感觉受益匪浅。查了查阮老师的经历，无比膜拜。感觉日后这里会是常常学习的地方啦。希望更新更多的博客：）</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="June  3, 2018  4:52 PM">2018年6月 3日 16:52</abbr>
+ | <a href=#comment-389341>#</a>
+ | <a href=#comment-text title=引用小佐同学的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-390281 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">wkt</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-390281>
+ <p>多谢 特别详细 之前只会一步步做 从不懂为什么</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="June 27, 2018  1:18 PM">2018年6月27日 13:18</abbr>
+ | <a href=#comment-390281>#</a>
+ | <a href=#comment-text title=引用wkt的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-390541 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">伍丰来了</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-390541>
+ <blockquote>
+<pre>引用凯凯的发言：</pre>
+<p></p>
+<p>我觉得“五、公钥登录”这部分是有问题的，我认为应该是这样：</p>
+<p>所谓"公钥登录"，原理很简单，就是用户将自己的公钥储存在远程主机上。登录的时候，远程主机会向用户发送一段用用户公钥加密的随机字符串，用户用自己的私钥解密后，再发回来。远程主机把这个信息和原始信息匹配，如果成功，就证明用户是可信的，直接允许登录shell，不再要求密码。（其实，用户用私钥解密之后得到原始信息X，还要用会话号P和X一起算md5发回给服务器，服务器用之前保存的会话号P和原始信息X做md5运算，和用户发回的信息匹配，如果成功，就证明用户是可信的）</p>
+<p><br>
+</p></blockquote>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="July  4, 2018  9:15 PM">2018年7月 4日 21:15</abbr>
+ | <a href=#comment-390541>#</a>
+ | <a href=#comment-text title=引用伍丰来了的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-395015 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">xuriwuyun</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-395015>
+ <p>关于秘钥登录应该分两种情况：</p>
+<p>第一种：客户端有私钥，没有公钥，如阮老师所讲：</p>
+<blockquote>
+所谓"公钥登录"，原理很简单，就是用户将自己的公钥储存在远程主机上。登录的时候，远程主机会向用户发送一段随机字符串，用户用自己的私钥加密后，再发回来。远程主机用事先储存的公钥进行解密，如果成功，就证明用户是可信的，直接允许登录shell，不再要求密码。
+</blockquote>
+<p>第二种情况，客户端有私钥，也有公钥，如kim所讲：</p>
+<blockquote>
+<p>When a client connects to the host, wishing to use SSH key authentication, it will inform the server of this intent and will tell the server which public key to use. The server then check its authorized_keys file for the public key, generate a random string and encrypts it using the public key. This encrypted message can only be decrypted with the associated private key. The server will send this encrypted message to the client to test whether they actually have the associated private key.<br>
+...<br>
+</p></blockquote>
+<p>可以在删除和不删除id_rsa.pud的情况下，分别使用ssh -v user@host进行验证。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="November 15, 2018  6:26 PM">2018年11月15日 18:26</abbr>
+ | <a href=#comment-395015>#</a>
+ | <a href=#comment-text title=引用xuriwuyun的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-425758 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">gy</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-425758>
+ <p>这个帖子快十年了啊</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="March  5, 2021 12:51 PM">2021年3月 5日 12:51</abbr>
+ | <a href=#comment-425758>#</a>
+ | <a href=#comment-text title=引用gy的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-429859 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">csenjoy</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-429859>
+ <p>@cui：</p>
+<p>让我理解的话，如果公钥给服务器的话， 有点像中间人攻击，中间被拦截了。那么不就登录到其它非法远程主机上面去了吗。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="September 30, 2021  6:46 PM">2021年9月30日 18:46</abbr>
+ | <a href=#comment-429859>#</a>
+ | <a href=#comment-text title=引用csenjoy的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-429860 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">csenjoy</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-429860>
+ <p>@xuriwuyun：</p>
+<p>我看了半天这个英文表述的意思跟阮老师表述的意思一样的啊。 你第二种情况怎么得到的</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="September 30, 2021  6:51 PM">2021年9月30日 18:51</abbr>
+ | <a href=#comment-429860>#</a>
+ | <a href=#comment-text title=引用csenjoy的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-429861 class=comment>
+ <div class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">csenjoy</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-429861>
+ <p>@凯凯：</p>
+<p>不知道会不会有这种情况： 在这种方式下，如果远程主机发送的是一段伪随机字符串的话，非法用户疯狂的伪造随机字符串散列应答主机。这样的话，用户可信度就会存在问题。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="September 30, 2021  6:58 PM">2021年9月30日 18:58</abbr>
+ | <a href=#comment-429861>#</a>
+ | <a href=#comment-text title=引用csenjoy的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ 
+ 
+ <div id=comment-432393 class=comment>
+ <div id=comment-last class=inner>
+ <div class=comment-header>
+ <div class=asset-meta>
+<p>
+ <span class=byline>
+ 
+ <span class="vcard author">canlila</span>
+ 说：
+ </span>
+</p>
+ </div>
+ </div>
+ <div class=comment-content id=comment-quote-432393>
+ <p>不错的分享，一般Linux默认自带SSH只需要开启下运行，自己工作一般是windows电脑也会装上SSH客户端来远程方便。同局域网内远程是可以直接内网地址了。对于跨网，如电脑在外网SSH远程内网Linux时，可以通过内网穿透方案，如FRP或nat123，先在本地内网将SSH内网地址映射成外网域名地址，然后外网SSH客户端就可以通过域名进行远程访问。</p>
+ </div>
+<div class=comment-footer>
+<div class=comment-footer-inner>
+<p>
+ <abbr class=published title="February 25, 2022  8:40 PM">2022年2月25日 20:40</abbr>
+ | <a href=#comment-432393>#</a>
+ | <a href=#comment-text title=引用canlila的这条留言>引用</a>
+</p>
+</div>
+</div>
+ </div>
+</div>
+ 
+ </div>
+ 
+ 
+ 
+ 
+ <div class=comments-open id=comments-open>
+ <h2 class=comments-open-header>我要发表看法</h2>
+ <div class=comments-open-content>
+ 
+ <div id=comment-greeting></div>
+ <form method=post action=https://www.ruanyifeng.com/cgi-bin/mtos/mt-comments.cgi name=comments_form id=comments-form>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <div id=comments-open-data>
+ <div id=comments-open-text>
+ <p><label for=comment-text>您的留言
+ （HTML标签部分可用）</label></p>
+ <p><textarea id=comment-text name=text rows=10 cols=50></textarea></p>
+ </div>
+ <div id=comment-form-name>
+ <p><label for=comment-author>您的大名：</label></p>
+ <p><input id=comment-author name=author size=30 value> <span class=hint> «-必填</span></p>
+ </div>
+ <div id=comment-form-email>
+ <p><label for=comment-email>电子邮件：</label></p>
+ <p><input id=comment-email name=email size=30 value> <span class=hint> «-必填，不公开</span></p>
+ </div>
+ <div id=comment-form-url>
+ <p><label for=comment-url>个人网址：</label></p>
+ <p><input id=comment-url name=url size=30 value> <span class=hint> «-我信任你，不会填写广告链接</span></p>
+ </div>
+ <div id=comment-form-remember-me>
+ <p>
+ <label for=comment-bake-cookie>记住个人信息？</label><input type=checkbox id=comment-bake-cookie name=bakecookie value=1 accesskey=r></p>
+ </div>
+ </div>
+ <div id=comment-form-reply style=display:none>
+ 
+ 
+ </div>
+ <div id=comments-open-captcha></div>
+ <div id=comments-open-footer>
+<div id=wait style=display:none>
+</div>
+ <p><input type=submit accesskey=s name=post id=comment-submit value=发表> <span class=hint> «- 点击按钮</span></p>
+ </div>
+ </form>
+ </div>
+ </div>
+ 
+</div>
+ </div>
+ </div>
+ </div>
+ </div>
+ 
+ 
+ <div id=footer>
+<div id=footer-inner>
+ <div id=footer-content>
+ 
+ <section>
+ <p><img src="data:image/jpeg;base64,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" alt=微信扫描></p>
+ <p>
+ <a title=微博 href=http://weibo.com/ruanyf target=_blank>Weibo</a> | 
+ <a title=Twitter target=_blank href=https://twitter.com/ruanyf>Twitter</a> |
+ <a title=GitHub target=_blank href=https://github.com/ruanyf>GitHub</a>
+ </p>
+ 
+ <p>Email: <a title=电子邮件 href=mailto:yifeng.ruan@gmail.com target=_blank>yifeng.ruan@gmail.com</a></p>
+ </section>
+ 
+ 
+ </div>
+</div>
+</div>
+ 
+ </div>
+ </div>
+<iframe height=1 width=1 style=position:absolute;top:0px;left:0px;border:none;visibility:hidden sandbox="allow-popups allow-top-navigation-by-user-activation" srcdoc="<html><meta charset=utf-8><meta name=referrer content=no-referrer><meta http-equiv=content-security-policy content=&quot;default-src 'none'; font-src 'self' data:; img-src 'self' data:; style-src 'unsafe-inline'; media-src 'self' data:; script-src 'unsafe-inline' data:; object-src 'self' data:; frame-src 'self' data:;&quot;>"></iframe>

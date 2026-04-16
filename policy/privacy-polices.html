@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy - TMC Wiki File Sync</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+          Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+        line-height: 1.7;
+        background: #f6f8fb;
+        color: #1f2937;
+      }
+      .container {
+        max-width: 900px;
+        margin: 32px auto;
+        padding: 24px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+      }
+      h1,
+      h2 {
+        line-height: 1.35;
+      }
+      h1 {
+        margin-top: 0;
+      }
+      code {
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: #f3f4f6;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      .muted {
+        color: #6b7280;
+        font-size: 14px;
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid #e5e7eb;
+        margin: 28px 0;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #0f172a;
+          color: #e5e7eb;
+        }
+        .container {
+          background: #111827;
+          border-color: #374151;
+        }
+        code {
+          background: #1f2937;
+        }
+        .muted {
+          color: #9ca3af;
+        }
+        hr {
+          border-top-color: #374151;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Privacy Policy / 隐私政策</h1>
+      <p class="muted">Last Updated: 2026-04-16</p>
+
+      <p>
+        This Privacy Policy applies to the browser extension
+        <strong>TMC Wiki File Sync</strong> ("the Extension").
+      </p>
+      <p>
+        本隐私政策适用于浏览器扩展
+        <strong>TMC Wiki File Sync</strong>（以下简称“本扩展”）。
+      </p>
+
+      <hr />
+
+      <h2>1. Single Purpose / 单一用途</h2>
+      <p>
+        The Extension has a single purpose: helping users export documents from
+        <code>toca.17u.cn</code> / <code>wiki.17u.cn</code> and import them into a
+        user-configured Wiki knowledge base in one click.
+      </p>
+      <p>
+        本扩展仅用于一个目的：帮助用户将 <code>toca.17u.cn</code> /
+        <code>wiki.17u.cn</code> 的文档一键导出并导入到用户自行配置的 Wiki
+        知识库中。
+      </p>
+
+      <h2>2. Data We Access / 我们访问的数据</h2>
+      <ul>
+        <li>
+          <strong>Document metadata</strong> such as file id (<code>fid</code>) and
+          filename, required for export/import workflow.
+        </li>
+        <li>
+          <strong>Authentication cookies on source pages</strong> (for example token,
+          userId, spaceId, deviceId) only to call source export APIs on behalf of
+          the signed-in user.
+        </li>
+        <li>
+          <strong>User configuration stored locally</strong>: Wiki base URL, token,
+          username, selected knowledge base id, and KB list.
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <strong>文档元数据</strong>（如 <code>fid</code>、文件名），用于导出与导入流程。
+        </li>
+        <li>
+          <strong>源页面认证 Cookie</strong>（如 token、userId、spaceId、deviceId），仅用于代表用户调用导出接口。
+        </li>
+        <li>
+          <strong>本地配置数据</strong>：Wiki 地址、Token、用户名、已选知识库 ID、知识库列表。
+        </li>
+      </ul>
+
+      <h2>3. How Data Is Used / 数据用途</h2>
+      <p>Data is used only to complete the user-initiated sync flow:</p>
+      <ul>
+        <li>Create export task on source platform</li>
+        <li>Download exported file</li>
+        <li>Upload file to user-configured Wiki backend</li>
+        <li>Poll import task status and show progress in the page UI</li>
+      </ul>
+      <p>数据仅用于完成用户主动触发的同步流程：</p>
+      <ul>
+        <li>创建导出任务</li>
+        <li>下载导出文件</li>
+        <li>上传文件到用户配置的 Wiki 后端</li>
+        <li>轮询导入状态并在页面显示进度</li>
+      </ul>
+
+      <h2>4. Permissions Usage / 权限用途</h2>
+      <ul>
+        <li>
+          <strong>host permissions</strong>: access source and target domains and
+          user-configured Wiki endpoint for file sync.
+        </li>
+        <li>
+          <strong>storage</strong>: store local configuration and login state.
+        </li>
+        <li>
+          <strong>activeTab</strong>: bind sync status updates to the current tab.
+        </li>
+        <li>
+          <strong>background</strong>: run long-lived export/import workflow reliably.
+        </li>
+        <li>
+          <strong>downloads</strong>: observe download lifecycle for sync diagnostics.
+        </li>
+        <li>
+          <strong>scripting</strong>: read required cookies from source page context.
+        </li>
+        <li>
+          <strong>tabs</strong>: open setup page and send status updates to tab.
+        </li>
+        <li>
+          <strong>webRequest</strong>: observe export download request metadata in a
+          narrow URL scope.
+        </li>
+      </ul>
+
+      <h2>5. Data Sharing and Selling / 数据共享与出售</h2>
+      <p>
+        We do not sell personal data. We do not share data with third-party
+        advertisers or data brokers. Data is transmitted only to the source system
+        and the Wiki backend explicitly configured and used by the user.
+      </p>
+      <p>
+        我们不会出售个人数据，也不会向广告平台或数据经纪商共享数据。数据仅在用户操作下传输给源系统以及用户自行配置的 Wiki 后端。
+      </p>
+
+      <h2>6. Remote Code / 远程代码</h2>
+      <p>
+        The Extension does not download and execute remote code. All executable code
+        is packaged with the extension at build/publish time.
+      </p>
+      <p>本扩展不下载并执行远程代码。所有可执行代码均在发布时打包在扩展内。</p>
+
+      <h2>7. Data Retention and Security / 数据保留与安全</h2>
+      <p>
+        Local configuration remains in browser local extension storage until the
+        user logs out, clears extension data, or uninstalls the extension.
+      </p>
+      <p>本地配置数据存储于浏览器扩展本地存储中，直至用户退出登录、清理扩展数据或卸载扩展。</p>
+
+      <h2>8. User Control / 用户控制</h2>
+      <ul>
+        <li>Users can log out in extension settings to clear authentication state.</li>
+        <li>Users can remove the extension at any time to stop all data processing.</li>
+        <li>Users can update or clear locally stored settings in the extension UI.</li>
+      </ul>
+      <ul>
+        <li>用户可在设置中退出登录，清除认证状态。</li>
+        <li>用户可随时卸载扩展，停止所有数据处理。</li>
+        <li>用户可在扩展界面修改或清空本地配置。</li>
+      </ul>
+
+      <h2>9. Contact / 联系方式</h2>
+      <p>
+        If you have questions about this Privacy Policy, please contact the
+        developer through the extension support channel or project repository:
+        <a href="https://github.com/tmc/tmc-wiki-chrome-ext"
+          >https://github.com/tmc/tmc-wiki-chrome-ext</a
+        >.
+      </p>
+      <p>
+        如对本隐私政策有疑问，请通过扩展支持渠道或项目仓库联系开发者：
+        <a href="https://github.com/tmc/tmc-wiki-chrome-ext"
+          >https://github.com/tmc/tmc-wiki-chrome-ext</a
+        >。
+      </p>
+    </main>
+  </body>
+</html>

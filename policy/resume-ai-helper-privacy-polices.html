@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume AI Helper Chrome Extension 隐私说明</title>
+    <style>
+      body { max-width: 760px; margin: 48px auto; padding: 0 24px; color: #28324a; font: 16px/1.75 system-ui, sans-serif; }
+      h1, h2 { color: #17213d; } code { padding: 2px 5px; background: #f1f3f8; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <h1>Resume AI Helper Chrome Extension 隐私说明</h1>
+    <p>更新日期：2026-07-21</p>
+    <p>本扩展用于在用户主动点击后，从当前打开且用户已有权访问的招聘网站简历详情页读取简历正文，并提交到用户配置的 Resume AI Helper 服务。</p>
+
+    <h2>读取和保存的数据</h2>
+    <ul>
+      <li>当前简历页中用户可见的候选人文本、规范化来源 URL、站点侧简历标识、页面标题和采集时间。</li>
+      <li>Resume AI Helper API 地址、JWT 和非敏感用户信息保存在扩展本地存储中；登录密码不保存。</li>
+      <li>扩展不读取或上传招聘网站 Cookie，不采集其他标签页，也不在后台批量扫描页面。</li>
+    </ul>
+
+    <h2>数据用途和传输</h2>
+    <p>采集数据仅用于在当前登录用户名下创建简历处理任务，完成结构化提取和简历库录入。数据只发送到用户在设置页明确配置并授权的 Resume AI Helper API 地址。</p>
+
+    <h2>权限</h2>
+    <p>扩展仅为已支持的猎聘简历详情页声明站点权限，并使用 <code>activeTab</code> 响应用户的一次采集操作。访问用户配置的后端地址前会请求对应的可选主机权限。</p>
+
+    <h2>删除和安全</h2>
+    <p>用户可在扩展设置页退出登录并清除本地会话。已录入的简历由 Resume AI Helper 后端按当前账号管理；请通过该系统的管理流程处理查询或删除请求。扩展日志不得输出 JWT、Cookie 或完整简历正文。</p>
+  </body>
+</html>
